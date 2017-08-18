@@ -39,13 +39,44 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                         
                         if let items = jsonResult["items"] as? NSArray {
                             
+                            let context = self.fetchedResultsController.managedObjectContext
+                            
+                            let request = NSFetchRequest<Event>(entityName: "Event")
+                            
+                            do {
+                                
+                                let results = try context.fetch(request)
+                                
+                                if results.count > 0 {
+                                    
+                                    for result in results {
+                                        
+                                        context.delete(result)
+                                        
+                                        do {
+                                            
+                                            try context.save()
+                                            
+                                            
+                                        } catch {
+                                            print("Specific delete failed")
+                                        }
+                                        
+                                    }
+                                }
+                                
+                            } catch {
+                                
+                                print("Delete failed")
+                            }
+                            
                             for item in items as [AnyObject] {
                                 
                                 print(item["published"])
                                 print(item["title"])
                                 print(item["content"])
                                 
-                                let context = self.fetchedResultsController.managedObjectContext
+                               
                                 let newEvent = Event(context: context)
                                 
                                 // If appropriate, configure the new managed object.
@@ -146,7 +177,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
 
     func configureCell(_ cell: UITableViewCell, withEvent event: Event) {
-        cell.textLabel!.text = event.value(forKey: "title") as? String 
+        cell.textLabel!.text = event.value(forKey: "title") as? String
     }
 
     // MARK: - Fetched results controller
