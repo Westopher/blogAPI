@@ -14,7 +14,12 @@ class DetailViewController: UIViewController {
     
     func configureView() {
         // Update the user interface for the detail item.
+        
+        
+        
         if let detail = detailItem {
+            
+            self.title = detail.value(forKey: "title") as! String 
             
             if let blogWebView = self.webView {
                 
