@@ -31,7 +31,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 
                 if let urlContent = data {
                     
-                    print(urlContent)
+                    do {
+                        
+                        let jsonResult = try JSONSerialization.jsonObject(with: urlContent, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+                        
+                        print(jsonResult)
+                        
+                    } catch {
+                        
+                        print("JSON Processing Failed")
+                    }
                 }
                 
                 
